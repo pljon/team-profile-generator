@@ -1,72 +1,185 @@
-// 1.
 // import manager, engineer, intern files with require()
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
+
 // import inquirer with require()
 const inquirer = require('inquirer');
+
 // import path with require()
-const html = require('./src/page-template.js');
+const path = require('path');
+
 // import fs with require()
 const fs = require('fs');
 
-// 2.
 // import page-template.js from subfoler src with require and assign it to a variable to be called later to render html
 const render = require('./src/page-template');
 
-// 3.
 // create variable to hold the path to dist subfolder using path lib resolve method
-const DIST_FOLDER = path.resolve(__dirname, 'dist');
+const DIR_OUTPUT = path.resolve(__dirname, 'output');
+
 // create variable to hold the path to team.html using path lib join method
-const HTML_FILE = path.join(DIST_FOLDER, '')
+const HTML_FILE = path.join(DIR_OUTPUT, 'index.html');
 
-// 4.
 // create an empty employee memeber array variable to store the employee members, manager, engineers, and interns
-// create an empty employee id array to store the employee ids
+const employees = [];
 
-// 5.
-// print user of usage
+// array of questions for manager
+const managerQuestions = [
+    {
+        type: 'input',
+        message: 'Enter the name of the manager:',
+        name: 'name'
+    },
+    {
+        type: 'input',
+        message: 'Enter the employee ID of the manager:',
+        name: 'id'
+    },
+    {
+        type: 'input',
+        message: 'Enter the email address of the manager:',
+        name: 'email'
+    },
+    {
+        type: 'input',
+        message: 'Enter the office number of the manager:',
+        name: 'office'        
+    },
+    {
+        type: 'list',
+        message: 'How would you like to continue?',
+        name: 'next',
+        choices: ['Add Engineer', 'Add Intern', 'Finish Building my Team']
+    },
+];
 
-// 6.
-// make call to create manager function to start the main process
+// array of questions for engineer
+const engineerQuestions = [
+    {
+        type: 'input',
+        message: 'Enter the name of the engineer:',
+        name: 'name'
+    },
+    {
+        type: 'input',
+        message: 'Enter the employee ID of the engineer:',
+        name: 'id'
+    },
+    {
+        type: 'input',
+        message: 'Enter the email address of the engineer:',
+        name: 'email'
+    },
+    {
+        type: 'input',
+        message: 'Enter the Github username of the engineer:',
+        name: 'github'
+    },
+    {
+        type: 'list',
+        message: 'How would you like to continue?',
+        name: 'next',
+        choices: ['Add Engineer', 'Add Intern', 'Finish Building my Team']
+    },
+];
 
-// 7.
+// array of questions for intern
+const internQuestions = [
+    {
+        type: 'input',
+        message: 'Enter the name of the intern:',
+        name: 'name'
+    },
+    {
+        type: 'input',
+        message: 'Enter the employee ID of the intern:',
+        name: 'id'
+    },
+    {
+        type: 'input',
+        message: 'Enter the email address of the intern:',
+        name: 'email'
+    },
+    {
+        type: 'input',
+        message: 'Enter the school of the intern:',
+        name: 'school'
+    },
+    {
+        type: 'list',
+        message: 'How would you like to continue?',
+        name: 'next',
+        choices: ['Add Engineer', 'Add Intern', 'Finish Building my Team']
+    },
+];
+
+
 // create manager function
-// - ask the questions for name, id, email, office number for manager using inquirer
-// - in the .then callback function, create manager object by instantiating Manager class instance, passing in name, id, office number as arguments to constructor
-// - push the manager object to the employee member array
-// - push the manager id to the employee id array
-// - make call to the create team function
+function init() {
+    inquirer.prompt(managerQuestions)
+    .then(answers => {
+        const manager = new Manager(answers.name, answers.id, answers.email, answers.office);
+        employees.push(manager);
+        if (answers.next === 'Add Engineer') {
+            addEngineer();
+        } else if (answers.next === 'Add Intern') {
+            addIntern();
+        } else {
+            generateHTML(render(employees));
+        }
+    })
+};
 
-// 8.
-// create team function
-// - prompt user with the list of choices for Engineer, Intern, or End of adding employee for the team
-// - in .then callback function check what the user choice is and make call to the corresponding functions respectively
-// - make call to add-engineer-function if the choice is engineer
-// - make call to add-intern-function if choice is intern
-// - make call to build-team function if choice is end of adding employee
+// make call to create manager function to start the main process
+init();
 
-// 8.
 // add engineer function
-// - prompt user with questions for engineer name, id, email, and github name
-// - in .then callback create engineer object by instantiating Engineer class instance passing name, id, email, and github as arguments to class constructor
-// - push engineer object to employee member array
-// - push engineer id to employee id array
-// - make call to create team function
+function addEngineer() {
+    inquirer.prompt(engineerQuestions)
+    .then(answers => {
+        const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
+        employees.push(engineer);
+        if (answers.next === 'Add Engineer') {
+            addEngineer();
+        } else if (answers.next === 'Add Intern') {
+            addIntern();
+        } else {
+            generateHTML(render(employees));
+        }
+    })
+};
 
-// 9.
 // add intern function
-// - prompt user with questions for intern name, id, email, and school
-// - in .then callback create intern object by instantiating Intern class instance passing name, id, email, and school as arguments to class constructor
-// - push intern object to employee member array
-// - push intern id to employee id array
-// - make call to create team function
+function addIntern() {
+    inquirer.prompt(internQuestions)
+    .then(answers => {
+        const intern = new Intern(answers.name, answers.id, answers.email, answers.school);
+        employees.push(intern);
+        if (answers.next === 'Add Engineer') {
+            addEngineer();
+        } else if (answers.next === 'Add Intern') {
+            addIntern();
+        } else {
+            generateHTML(render(employees));
+        }
+    })
+};
 
-// 10.
 // build team function
-// - check existing of dist subfolder
-// - if not exist, create the dist subfolder
-// - make call to imported render function passing employee member array as argument and assign returned html to a variable
-// - make call to fs write file function passing the html file path, html variable
+const generateHTML = newHTML => {
+    if (fs.existsSync(HTML_FILE)) {
+        fs.writeFile(HTML_FILE, newHTML, function(err) {
+            if (err) throw err;
+            console.log('Team Page Created Successfully!')
+        })
+    } else {
+        fs.mkdirSync(DIR_OUTPUT)
+        fs.writeFile(HTML_FILE, newHTML, function(err) {
+            if (err) throw err;
+            console.log('Team Page Created Successfully!')
+        })
+    }
+};
 
 
