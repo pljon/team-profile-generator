@@ -1,5 +1,23 @@
-// create team function with team array passed in
-const create_team_function = team => {
+const path = require('path');
+const fs = require('fs');
+
+// create employees function with employees array passed in
+const create_employees_function = employees => {
+
+    const html = [];
+
+    html.push(...employees
+        .filter(employee => employee.getRole() === 'Manager')
+        .map(manager => renderManager(manager))
+        );
+    html.push(...employees
+        .filter(employee => employee.getRole() === 'Engineer')
+        .map(engineer=> renderEngineer(engineer))
+        );
+    html.push(...employees
+        .filter(employee => employee.getRole() === 'Intern')
+        .map(intern => renderIntern(intern))
+        );
 
     // create the manager html function with manager object passed in as input parameter
     // - return template literal replacing name, role, id, email, office number with getXXX methods from manager object
