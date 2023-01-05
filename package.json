@@ -1,5 +1,29 @@
 {
   "dependencies": {
-    "inquirer": "^8.2.4"
-  }
+    "init": "^0.1.2",
+    "inquirer": "^8.2.5",
+    "jest": "^29.3.1"
+  },
+  "name": "team-profile-generator",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pljon/team-profile-generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pljon/team-profile-generator/issues"
+  },
+  "homepage": "https://github.com/pljon/team-profile-generator#readme"
 }

@@ -13,13 +13,13 @@ const path = require('path');
 const fs = require('fs');
 
 // import page-template.js from subfoler src with require and assign it to a variable to be called later to render html
-const render = require('./src/page-template');
+const render = require('./lib/generateHTML');
 
 // create variable to hold the path to dist subfolder using path lib resolve method
-const DIR_OUTPUT = path.resolve(__dirname, 'output');
+const DIR_OUTPUT = path.resolve(__dirname, 'dist');
 
 // create variable to hold the path to team.html using path lib join method
-const HTML_FILE = path.join(DIR_OUTPUT, 'index.html');
+const HTML_FILE = path.join(DIR_OUTPUT, 'team.html');
 
 // create an empty employee memeber array variable to store the employee members, manager, engineers, and interns
 const employees = [];
