@@ -168,18 +168,24 @@ function addIntern() {
 
 // build team function
 const generateHTML = newHTML => {
-    if (fs.existsSync(HTML_FILE)) {
-        fs.writeFile(HTML_FILE, newHTML, function(err) {
+    fs.access(DIR_OUTPUT, err => {
+      if (err) {
+        // if directory does not exist, create it
+        fs.mkdir(DIR_OUTPUT, err => {
+          if (err) throw err;
+          // if directory was created, write the file
+          fs.writeFile(HTML_FILE, newHTML, err => {
             if (err) throw err;
-            console.log('Team Page Created Successfully!')
-        })
-    } else {
-        fs.mkdirSync(DIR_OUTPUT)
-        fs.writeFile(HTML_FILE, newHTML, function(err) {
-            if (err) throw err;
-            console.log('Team Page Created Successfully!')
-        })
-    }
-};
-
+            console.log('Team Page Created Successfully!');
+          });
+        });
+      } else {
+        // Directory exists, write the file
+        fs.writeFile(HTML_FILE, newHTML, err => {
+          if (err) throw err;
+          console.log('Team Page Created Successfully!');
+        });
+      }
+    });
+  };
 
