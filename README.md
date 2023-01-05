@@ -55,4 +55,4 @@ Example webpage found in `/dist` folder
 
 ## Demo
 
-![video-sample](./assets/video/team-html-generator.mp4)
+![video-sample](./assets/video/team-profile-generator.gif)
